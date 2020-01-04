@@ -6,7 +6,7 @@ public class MergeSort
   void merge(int arr[], int p, int m, int u)
   {
     // Encuentra los tamaños de los 2 subarreglos que se les hara merge
-    int n1 = m - l + 1;
+    int n1 = m - p + 1;
     int n2 = u - m;
 
     /* Crea 2 arreglos temporales */
@@ -23,7 +23,7 @@ public class MergeSort
     // Indices iniciales de los subarreglos
     int i = 0, j = 0;
 
-    int k = l;
+    int k = p;
     while (i < n1 && j < n2)
     {
       if (L[i] >= R[j])
