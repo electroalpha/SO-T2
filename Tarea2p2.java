@@ -44,7 +44,7 @@ public class Tarea2p2{
     
   }
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws InterruptedException {
 
     	// Se crea un arreglo con valores aleatorios
 	    Random rand = new Random();
@@ -78,7 +78,7 @@ public class Tarea2p2{
 	    sortarrayDer.join();
 
 		//Se hace el merge final
-	    finalMerge (sortarrayIzq.getSortedArray(), sortarrayDer.getSortedArray());
+	    finalMerge (sortarrayIzq.getarrayResult(), sortarrayDer.getarrayResult());
 		long stopTime = System.currentTimeMillis();
 	    long tiempo_con_threads = stopTime - startTime;
 
@@ -90,7 +90,7 @@ public class Tarea2p2{
 	    startTime = System.currentTimeMillis();
 	    MergeSort ms = new MergeSort();
 	    ms.sort(array, 0, array.length-1);
-	    long stopTime = System.currentTimeMillis();
+	    stopTime = System.currentTimeMillis();
 	    long tiempo_sin_threads = stopTime - startTime;
 
 	    //PRINTEAR ARREGLO ORDENADO SIN THREADS
@@ -102,4 +102,75 @@ public class Tarea2p2{
 	    System.out.println("Tiempo de ejecución para MergeSort sin threads: " + (float)tiempo_sin_threads/1000 + " segundos");
 
 	}
+}
+
+//clase utilizada para emplear el uso de threads
+class Buenardo extends Thread {
+	//atributos
+  	private int[] arrayResult;
+
+  	//constructor
+  	Buenardo(int[] array) {
+    	arrayResult = array;
+  	}
+
+  	//getters
+  	public int[] getarrayResult() {
+      	return arrayResult;
+  	}
+
+  	//Funcion que retorna la mitad izquierda de un array
+  	public int[] mitadIzq(int[] array) {
+    	int lenIzq = array.length / 2;
+    	int[] arrayIzq = new int[lenIzq];
+
+    	for (int i = 0; i < lenIzq; i++) {
+       		arrayIzq[i] = array[i];
+    	}
+    	return arrayIzq;
+  	}
+  	//Funcion que retorna la mitad derecha de un array
+  	public int[] mitadDer(int[] array) {
+    	int lenIzq = array.length / 2;
+    	int lenDer = array.length - lenIzq;
+    	int[] arrayDer = new int[lenDer];
+
+    	for (int i = 0; i < lenDer; i++) {
+       		arrayDer[i] = array[i + lenIzq];
+    	}
+    	return arrayDer;
+  	}
+
+  	//funcion que realiza el merge con las mitades de un arreglo
+  	public void merge(int[] result, int[] arrayIzq, int[] arrayDer) {
+    	int contIzq = 0;
+    	int contDer = 0;
+
+    	for (int i = 0; i < result.length; i++) {
+      		if (contDer >= arrayDer.length || (contIzq < arrayIzq.length && arrayIzq[contIzq] >= arrayDer[contDer])) {
+        	result[i] = arrayIzq[contIzq];
+        		contIzq++;
+      		}else{
+        		result[i] = arrayDer[contDer];
+        		contDer++;
+      		}
+    	}
+  	}
+
+  	//funcion que ordena usando MergeSort
+  	public void mergeSort(int[] array) {
+    	if (array.length > 1) {
+      		int[] arrayIzq = mitadIzq(array);
+      		int[] arrayDer = mitadDer(array);
+
+      		mergeSort(arrayIzq);
+      		mergeSort(arrayDer);
+
+      		merge(array, arrayIzq, arrayDer);
+    	}
+  	}
+
+  	public void run() {
+    	mergeSort(arrayResult);
+  	}
 }
