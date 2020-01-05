@@ -35,31 +35,32 @@ public class Tarea2p2{
       }
     }
 
-    //  PRINTEAR ARREGLO ORDENADO CON THREADS
+    /*  PRINTEAR ARREGLO ORDENADO CON THREADS
     System.out.println("Arreglo ordenado con threads:");
     for (j = 0; j < a.length + b.length; j++){
       System.out.print(result[j]+" ");
     }
-    System.out.print("\n");
-    
+    System.out.println("\n");  
+    */  
   }
 
 	public static void main(String[] args) throws InterruptedException {
 
     	// Se crea un arreglo con valores aleatorios
 	    Random rand = new Random();
-	    int[] array = new int[10];
+	    int[] array = new int[1000000];
 	    for (int i=0; i<array.length; i++) {
 	      array[i] = rand.nextInt(100);
 	    }
 
-		//PRINTEAR ARREGLO
+		/*PRINTEAR ARREGLO
 	    System.out.println("Arreglo a ordenar:");
 	    int x;
 	    for (x = 0; x < array.length; x++){
 	      System.out.print(array[x]+" ");
 	    }
 	    System.out.println("\n");
+      */
 
 		// Se separa en 2 sub arreglos para luego hacer merge con threads
 		long startTime = System.currentTimeMillis();
@@ -82,9 +83,6 @@ public class Tarea2p2{
 		long stopTime = System.currentTimeMillis();
 	    long tiempo_con_threads = stopTime - startTime;
 
-		System.out.println("\n");
-	    System.out.println("Tiempo de ejecución para MergeSort con threads:" + (float)tiempo_con_threads/1000 + " segundos");
-
 
 	    //Se ordena el arreglo sin threads
 	    startTime = System.currentTimeMillis();
@@ -93,13 +91,14 @@ public class Tarea2p2{
 	    stopTime = System.currentTimeMillis();
 	    long tiempo_sin_threads = stopTime - startTime;
 
-	    //PRINTEAR ARREGLO ORDENADO SIN THREADS
+	    /*PRINTEAR ARREGLO ORDENADO SIN THREADS
 	    System.out.println("Arreglo ordenado sin threads:");
 	    for (x = 0; x < array.length; x++){
 	      System.out.print(array[x]+" ");
 	    }
-	    System.out.print("\n");
+	    System.out.println("\n");*/
 	    System.out.println("Tiempo de ejecución para MergeSort sin threads: " + (float)tiempo_sin_threads/1000 + " segundos");
+      System.out.println("Tiempo de ejecución para MergeSort con threads:" + (float)tiempo_con_threads/1000 + " segundos");
 
 	}
 }
