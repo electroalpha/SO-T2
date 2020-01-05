@@ -35,13 +35,13 @@ public class Tarea2p2{
       }
     }
 
-    /*  PRINTEAR ARREGLO ORDENADO CON THREADS
+    //  PRINTEAR ARREGLO ORDENADO CON THREADS
     System.out.println("Arreglo ordenado con threads:");
     for (j = 0; j < a.length + b.length; j++){
       System.out.print(result[j]+" ");
     }
     System.out.print("\n");
-    */
+    
   }
 
 	public static void main(String[] args){
@@ -61,14 +61,33 @@ public class Tarea2p2{
 	    }
 	    System.out.println("\n");
 
-			// Se separa en 2 sub arreglos para luego hacer merge con threads
-			int[] arrayIzq = new int[array.length/2];
+		// Se separa en 2 sub arreglos para luego hacer merge con threads
+		long startTime = System.currentTimeMillis();
+		int[] arrayIzq = new int[array.length/2];
 	    int[] arrayDer = new int[array.length - array.length/2];
 	    System.arraycopy(array, 0, arrayIzq, 0, array.length/2);
 	    System.arraycopy(array, array.length/2, arrayDer, 0, array.length - array.length/2);
 
+	    Buenardo sortarrayIzq = new Buenardo(arrayIzq);
+	    Buenardo sortarrayDer = new Buenardo(arrayDer);
+		//Inicio los threads donde cada uno trabaja con un subarray
+	    sortarrayIzq.start();
+	    sortarrayDer.start();
+		//Estos join sirven para que estos threads no mueran hasta que muera el thread donde son llamados
+	    sortarrayIzq.join();
+	    sortarrayDer.join();
+
+		//Se hace el merge final
+	    finalMerge (sortarrayIzq.getSortedArray(), sortarrayDer.getSortedArray());
+		long stopTime = System.currentTimeMillis();
+	    long tiempo_con_threads = stopTime - startTime;
+
+		System.out.println("\n");
+	    System.out.println("Tiempo de ejecución para MergeSort con threads:" + (float)tiempo_con_threads/1000 + " segundos");
+
+
 	    //Se ordena el arreglo sin threads
-	    long startTime = System.currentTimeMillis();
+	    startTime = System.currentTimeMillis();
 	    MergeSort ms = new MergeSort();
 	    ms.sort(array, 0, array.length-1);
 	    long stopTime = System.currentTimeMillis();
@@ -81,28 +100,6 @@ public class Tarea2p2{
 	    }
 	    System.out.print("\n");
 	    System.out.println("Tiempo de ejecución para MergeSort sin threads: " + (float)tiempo_sin_threads/1000 + " segundos");
-
-			//Empezar arreglo con THREADS
-
-			long startTime = System.currentTimeMillis();
-
-			Buenardo sortarrayIzq = new Buenardo(arrayIzq);
-	    Buenardo sortarrayDer = new Buenardo(arrayDer);
-			//Inicio los threads donde cada uno trabaja con un subarray
-	    sortarrayIzq.start();
-	    sortarrayDer.start();
-			//Estos join sirven para que estos threads no mueran hasta que muera el thread donde son llamados
-	    sortarrayIzq.join();
-	    sortarrayDer.join();
-
-			// Se hace el merge final
-	    finalMerge (sortarrayIzq.getSortedArray(), sortarrayDer.getSortedArray());
-
-			long stopTime = System.currentTimeMillis();
-	    long elapsedTimeWT = stopTime - startTime;
-
-			System.out.println("\n");
-	    System.out.println("Tiempo de ejecución para MergeSort con threads:" + (float)elapsedTimeWT/1000 + " segundos");
 
 	}
 }
